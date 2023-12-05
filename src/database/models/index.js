@@ -1,5 +1,5 @@
-const Sequelize = require("sequelize");
-const config = require("../config")[process.env.NODE_ENV || "development"];
+const Sequelize = require('sequelize');
+const config = require('../config')[process.env.NODE_ENV || 'development'];
 const db = {};
 
 const sequelize = new Sequelize(
@@ -9,7 +9,8 @@ const sequelize = new Sequelize(
   config
 );
 
-db.user = require("./User")(sequelize, Sequelize);
+db.User = require('./User')(sequelize, Sequelize);
+//db.board = require('./Board')(sequelize, Sequelize);
 
 Object.values(db).forEach((model) => {
   if (model.associate) {
