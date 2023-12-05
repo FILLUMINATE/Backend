@@ -12,8 +12,8 @@ router.post('/join', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const response = await userService.userLogin(req.body);
+  const result = await userService.userLogin(req.body);
 
-  res.sendStatus(response);
+  res.status(200).send(result);
 });
 module.exports = router;
