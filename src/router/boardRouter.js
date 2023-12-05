@@ -27,6 +27,11 @@ router.get('/notice', async (req, res) => {
   return res.status(200).send(result);
 });
 
+router.get('/img/:id', async (req, res) => {
+  const result = await boardService.getImg(req.params.id);
+  return res.status(200).send(result);
+});
+
 router.post('/', upload.array('img'), async (req, res) => {
   const result = await boardService.postBoard(req.body);
   console.log(result[0].dataValues.boardId);

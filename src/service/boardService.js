@@ -11,7 +11,17 @@ class BoardService {
       return 500;
     }
   }
-
+  async getImg(boardId) {
+    try {
+      return await Image.findAll({
+        attributes: ['imgLink'],
+        where: { boardId },
+      });
+    } catch (err) {
+      console.log(err);
+      return 500;
+    }
+  }
   async postBoard(boardDTO) {
     const { title, description, isNotice } = boardDTO;
 
