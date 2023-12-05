@@ -10,4 +10,10 @@ router.post('/join', async (req, res) => {
 
   res.sendStatus(response);
 });
+
+router.post('/', async (req, res) => {
+  const response = await userService.userLogin(req.body);
+
+  res.sendStatus(response);
+});
 module.exports = router;
