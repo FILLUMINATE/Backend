@@ -12,7 +12,6 @@ const sequelize = new Sequelize(
 db.User = require('./User')(sequelize, Sequelize);
 db.Board = require('./Board')(sequelize, Sequelize);
 db.Image = require('./Image')(sequelize, Sequelize);
-//db.board = require('./Board')(sequelize, Sequelize);
 
 Object.values(db).forEach((model) => {
   if (model.associate) {

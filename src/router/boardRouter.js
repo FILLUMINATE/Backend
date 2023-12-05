@@ -27,17 +27,33 @@ router.get('/notice', async (req, res) => {
   return res.status(200).send(result);
 });
 
+router.get('/', async (req, res) => {
+  const result = await boardService.getProject();
+
+  return res.status(200).send(result);
+});
+
 router.get('/img/:id', async (req, res) => {
   const result = await boardService.getImg(req.params.id);
+
   return res.status(200).send(result);
 });
 
 router.post('/', upload.array('img'), async (req, res) => {
   const result = await boardService.postBoard(req.body);
-  console.log(result[0].dataValues.boardId);
-  for (const element of req.files) {
-    await boardService.postImg(result[0].dataValues.boardId, element.filename);
+  if (req.files) {
+    for (const element of req.files) {
+      await boardService.postImg(
+        result[0].dataValues.boardId,
+        element.filename
+      );
+    }
+    return res.sendStatus(200);
   }
+
+  //   router.put('/:id', upload.array('img'), async (req, res) => {
+  //     if(req.files)
+  //   });
   return res.sendStatus(200);
 });
 module.exports = router;

@@ -11,6 +11,16 @@ class BoardService {
       return 500;
     }
   }
+
+  async getProject() {
+    try {
+      return await Board.findAll({ where: { isNotice: false } });
+    } catch (err) {
+      console.log(err);
+      return 500;
+    }
+  }
+
   async getImg(boardId) {
     try {
       return await Image.findAll({
