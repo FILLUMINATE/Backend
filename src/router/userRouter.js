@@ -8,12 +8,12 @@ router.post('/join', async (req, res) => {
   const { userId, userPassword, userName } = req.body;
   const response = await userService.userJoin(userId, userPassword, userName);
 
-  res.sendStatus(response);
+  return res.sendStatus(response);
 });
 
 router.post('/', async (req, res) => {
   const result = await userService.userLogin(req.body);
 
-  res.status(200).send(result);
+  return res.status(200).send(result);
 });
 module.exports = router;
