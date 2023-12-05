@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Board = sequelize.define(
-    "Board",
+    'Board',
     {
       boardId: {
         type: DataTypes.INTEGER,
@@ -14,18 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
-      image: {
-        type: DataTypes.STRING(10000),
-        allowNull: true,
-      },
-
       description: {
-        type: DataTypes.STRING(10000),
+        type: DataTypes.STRING(3000),
         allowNull: false,
       },
     },
     {
-      tableName: "board",
+      tableName: 'board',
       timestamps: false,
     }
   );
