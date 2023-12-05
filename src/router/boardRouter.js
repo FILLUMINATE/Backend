@@ -29,9 +29,10 @@ router.get('/notice', async (req, res) => {
 
 router.post('/', upload.array('img'), async (req, res) => {
   const result = await boardService.postBoard(req.body);
+  console.log(result[0].dataValues.boardId);
   for (const element of req.files) {
-    console.log(element.filename);
+    await boardService.postImg(result[0].dataValues.boardId, element.filename);
   }
-  return res.sendStatus(result);
+  return res.sendStatus(200);
 });
 module.exports = router;

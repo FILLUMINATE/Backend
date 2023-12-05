@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { Op } = require('sequelize');
-const { Board } = require('../database/models');
+const { Op, Sequelize } = require('sequelize');
+const { Board, Image } = require('../database/models');
 
 class BoardService {
   async getNotice() {
@@ -15,9 +15,24 @@ class BoardService {
   async postBoard(boardDTO) {
     const { title, description, isNotice } = boardDTO;
 
-    if (!title || !description || !isNotice) return 400;
-    await Board.create({ title, description, isNotice });
-    return 200;
+    try {
+      if (!title || !description || !isNotice) return 400;
+      await Board.create({ title, description, isNotice });
+      const result = await Board.findAll({
+        attribute: [Sequelize.fn('MAX', Sequelize.col('boardId'))],
+        order: [[Sequelize.col('boardId'), 'DESC']],
+        limit: 1,
+      });
+      return result;
+    } catch (err) {
+      console.log(err);
+      return 500;
+    }
+  }
+
+  async postImg(boardId, imgLink) {
+    await Image.create({ boardId, imgLink });
+    return;
   }
 }
 
