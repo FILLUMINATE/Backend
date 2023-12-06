@@ -3,7 +3,7 @@ const env = process.env;
 
 const development = {
   username: env.DB_USER,
-  port: 31874,
+  port: env.DB_PORT,
   password: env.DB_PASSWORD,
   database: env.DATABASE,
   host: env.DB_HOST,
