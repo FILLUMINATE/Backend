@@ -4,6 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 const boardService = new BoardService();
 const path = require('path');
+const fs = require('fs');
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -33,6 +34,13 @@ router.get('/', async (req, res) => {
   return res.status(200).send(result);
 });
 
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  const result = await boardService.getOne(id);
+
+  return res.status(200).send(result);
+});
+
 router.get('/img/:id', async (req, res) => {
   const result = await boardService.getImg(req.params.id);
 
@@ -50,10 +58,35 @@ router.post('/', upload.array('img'), async (req, res) => {
     }
     return res.sendStatus(200);
   }
-
-  //   router.put('/:id', upload.array('img'), async (req, res) => {
-  //     if(req.files)
-  //   });
-  return res.sendStatus(200);
 });
+
+router.put('/:id', upload.array('img'), async (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  if (
+    (req.file && req.file.length > 0) ||
+    (req.files && req.files.length > 0)
+  ) {
+    console.log('진입');
+    for (const element of req.files) {
+      await boardService.postImg(id, element.filename);
+    }
+    if (req.body.deleteFileId && req.body.deleteFileId.length > 0) {
+      if (typeof req.body.deleteFileId === 'object') {
+        for (const element of req.body.deleteFileId) {
+          console.log(element);
+          await boardService.getImgById(element);
+        }
+      } else {
+        await boardService.getImgById(req.body.deleteFileId);
+      }
+    }
+  }
+  await boardService.updateBoard(id, body);
+  return res.send(200);
+});
+
+// router.delete('/:id', async(req, res)=>{
+//   const boardId =
+// })
 module.exports = router;
