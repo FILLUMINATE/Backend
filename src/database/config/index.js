@@ -7,7 +7,7 @@ const development = {
   password: env.DB_PASSWORD,
   database: env.DATABASE,
   host: env.DB_HOST,
-  dialect: 'mysql',
+  dialect: 'mariadb',
 };
 
 const production = {
