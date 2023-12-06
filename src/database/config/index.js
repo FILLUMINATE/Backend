@@ -7,23 +7,25 @@ const development = {
   password: env.DB_PASSWORD,
   database: env.DATABASE,
   host: env.DB_HOST,
-  dialect: 'mariadb',
+  dialect: 'mysql',
 };
 
 const production = {
   username: env.DB_USER,
+  port: env.DB_PORT,
   password: env.DB_PASSWORD,
   database: env.DATABASE,
   host: env.DB_HOST,
-  dialect: 'mysql',
+  dialect: 'mariadb',
 };
 
 const test = {
   username: env.DB_USER,
+  port: env.DB_PORT,
   password: env.DB_PASSWORD,
-  database: env.DATABASE_TEST,
+  database: env.DATABASE,
   host: env.DB_HOST,
-  dialect: 'mysql',
+  dialect: 'mariadb',
 };
 
 module.exports = { development, production, test };

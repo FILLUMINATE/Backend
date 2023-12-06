@@ -7,7 +7,13 @@ const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
-  config
+  {
+    host: config.host,
+    dialect: config.dialect,
+    operatorsAliases: false,
+    timezone: '+09:00',
+    port: config.port,
+  }
 );
 
 db.User = require('./User')(sequelize, Sequelize);
