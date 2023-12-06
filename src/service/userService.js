@@ -1,8 +1,6 @@
 require('dotenv').config();
 const { User } = require('../database/models');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 class UserService {
