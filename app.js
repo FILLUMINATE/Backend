@@ -34,4 +34,3 @@ db.sequelize
   .catch(console.error);
 
 app.listen(port);
-console.log('listening at ' + '127.0.0.1:' + port);
