@@ -82,17 +82,42 @@ class BoardService {
 
   async getImgById(id) {
     try {
-      console.log(id);
       const imgPut = await Image.findAll({
         attributes: ['imgLink'],
         where: { id },
       });
       await Image.destroy({ where: { id } });
+      console.log(imgPut[0].dataValues.imgLink);
+
       fs.unlinkSync('./public/images/' + imgPut[0].dataValues.imgLink);
       return;
     } catch (err) {
       console.log(err);
       return 500;
+    }
+  }
+
+  async deleteById(boardId) {
+    try {
+      const data = await Image.findAll({
+        where: { boardId },
+      });
+
+      let cnt = 0;
+      while (data[cnt]) {
+        console.log(data[cnt].dataValues.imgLink);
+        await Image.destroy({
+          where: { imgLink: data[cnt].dataValues.imgLink },
+        });
+        fs.unlinkSync('./public/images/' + data[cnt].dataValues.imgLink);
+        cnt += 1;
+      }
+
+      await Board.destroy({ where: { boardId } });
+      return;
+    } catch (err) {
+      console.log(err);
+      return;
     }
   }
 }

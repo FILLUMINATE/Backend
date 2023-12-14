@@ -67,14 +67,12 @@ router.put('/:id', upload.array('img'), async (req, res) => {
     (req.file && req.file.length > 0) ||
     (req.files && req.files.length > 0)
   ) {
-    console.log('진입');
     for (const element of req.files) {
       await boardService.postImg(id, element.filename);
     }
     if (req.body.deleteFileId && req.body.deleteFileId.length > 0) {
       if (typeof req.body.deleteFileId === 'object') {
         for (const element of req.body.deleteFileId) {
-          console.log(element);
           await boardService.getImgById(element);
         }
       } else {
@@ -83,10 +81,12 @@ router.put('/:id', upload.array('img'), async (req, res) => {
     }
   }
   await boardService.updateBoard(id, body);
-  return res.send(200);
+  return res.sendStatus(200);
 });
 
-// router.delete('/:id', async(req, res)=>{
-//   const boardId =
-// })
+router.delete('/:id', async (req, res) => {
+  const boardId = req.params.id;
+  await boardService.deleteById(boardId);
+  return res.json({ delete: true });
+});
 module.exports = router;
