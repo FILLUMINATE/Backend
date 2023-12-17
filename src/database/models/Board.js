@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
+      writedDate: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+
       isNotice: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

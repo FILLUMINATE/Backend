@@ -1,13 +1,12 @@
 const fs = require('fs');
 const { Op, Sequelize } = require('sequelize');
-const { Board, Image } = require('../database/models');
-const { response } = require('express');
+const { Board, Image, sequelize } = require('../database/models');
 
 class BoardService {
   async getNotice() {
     try {
       return await Board.findAll({
-        attributes: ['boardId', 'title'],
+        attributes: ['boardId', 'title', 'writedDate'],
         where: { isNotice: true },
       });
     } catch (err) {
@@ -19,7 +18,7 @@ class BoardService {
   async getProject() {
     try {
       return await Board.findAll({
-        attributes: ['boardId', 'title'],
+        attributes: ['boardId', 'title', 'writedDate'],
         where: { isNotice: false },
       });
     } catch (err) {
@@ -52,7 +51,12 @@ class BoardService {
 
     try {
       if (!title || !description || !isNotice) return 400;
-      await Board.create({ title, description, isNotice });
+      await Board.create({
+        title,
+        description,
+        isNotice,
+        writedDate: sequelize.literal('NOW()'),
+      });
       const result = await Board.findAll({
         attribute: [Sequelize.fn('MAX', Sequelize.col('boardId'))],
         order: [[Sequelize.col('boardId'), 'DESC']],
