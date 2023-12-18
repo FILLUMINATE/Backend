@@ -18,7 +18,7 @@ class BoardService {
   async getProject() {
     try {
       return await Board.findAll({
-        attributes: ['boardId', 'title', 'period'],
+        attributes: ['boardId', 'title', 'period', 'support'],
         where: { isNotice: false },
       });
     } catch (err) {
