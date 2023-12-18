@@ -19,14 +19,29 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
-      writedDate: {
+      period: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
 
       isNotice: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
         allowNull: false,
+      },
+
+      support: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
+      address: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
+      hashtag: {
+        type: DataTypes.STRING(200),
+        allowNull: true,
       },
     },
     {

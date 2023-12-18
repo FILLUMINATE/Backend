@@ -48,7 +48,13 @@ router.get('/img/:id', async (req, res) => {
 });
 
 router.post('/', upload.array('img'), async (req, res) => {
-  const result = await boardService.postBoard(req.body);
+  let result;
+  console.log(req.body);
+  if (req.body.support || req.body.address || req.body.hashtag) {
+    result = await boardService.postProject(req.body);
+  } else {
+    result = await boardService.postNotice(req.body);
+  }
   if (req.files) {
     for (const element of req.files) {
       await boardService.postImg(

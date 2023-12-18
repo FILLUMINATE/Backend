@@ -6,7 +6,7 @@ class BoardService {
   async getNotice() {
     try {
       return await Board.findAll({
-        attributes: ['boardId', 'title', 'writedDate'],
+        attributes: ['boardId', 'title', 'period'],
         where: { isNotice: true },
       });
     } catch (err) {
@@ -18,7 +18,7 @@ class BoardService {
   async getProject() {
     try {
       return await Board.findAll({
-        attributes: ['boardId', 'title', 'writedDate'],
+        attributes: ['boardId', 'title', 'period'],
         where: { isNotice: false },
       });
     } catch (err) {
@@ -29,7 +29,17 @@ class BoardService {
 
   async getOne(boardId) {
     try {
-      return await Board.findAll({ where: { boardId } });
+      const result = await Board.findAll({ where: { boardId } });
+      console.log(result[0].dataValues.isNotice);
+      if (result[0].dataValues.isNotice == 0) {
+        delete result[0].dataValues.isNotice;
+        return result;
+      }
+      delete result[0].dataValues.isNotice;
+      delete result[0].dataValues.support;
+      delete result[0].dataValues.address;
+      delete result[0].dataValues.hashtag;
+      return result;
     } catch (err) {
       console.log(err);
       return 404;
@@ -46,16 +56,42 @@ class BoardService {
       return 500;
     }
   }
-  async postBoard(boardDTO) {
-    const { title, description, isNotice } = boardDTO;
+  async postNotice(boardDTO) {
+    const { title, description, period } = boardDTO;
 
     try {
-      if (!title || !description || !isNotice) return 400;
+      if (!title || !description) return 400;
       await Board.create({
         title,
         description,
-        isNotice,
-        writedDate: sequelize.literal('NOW()'),
+        isNotice: true,
+        period,
+      });
+      const result = await Board.findAll({
+        attribute: [Sequelize.fn('MAX', Sequelize.col('boardId'))],
+        order: [[Sequelize.col('boardId'), 'DESC']],
+        limit: 1,
+      });
+      return result;
+    } catch (err) {
+      console.log(err);
+      return 500;
+    }
+  }
+
+  async postProject(boardDTO) {
+    const { title, description, period, support, address, hashtag } = boardDTO;
+
+    try {
+      if (!title || !description) return 400;
+      await Board.create({
+        title,
+        description,
+        isNotice: false,
+        period,
+        support,
+        address,
+        hashtag,
       });
       const result = await Board.findAll({
         attribute: [Sequelize.fn('MAX', Sequelize.col('boardId'))],
